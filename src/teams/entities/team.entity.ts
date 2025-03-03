@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { Player } from '../../players/entities/player.entity';
+import { CURRENT_TIMESTAMP } from 'utils/constants';
 
 @Entity('teams')
 export class Team {
@@ -17,5 +18,15 @@ export class Team {
 
   @OneToMany(() => Player, (player) => player.team)
   players: Player[];
+
+  @CreateDateColumn({ type: 'timestamp', default: () => CURRENT_TIMESTAMP })
+  createdAt: Date;
+
+  @UpdateDateColumn({
+    type: 'timestamp',
+    default: () => CURRENT_TIMESTAMP,
+    onUpdate: CURRENT_TIMESTAMP,
+  })
+  updatedAt: Date;
 }
 

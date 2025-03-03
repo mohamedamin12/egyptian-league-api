@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put } from '@nestjs/common';
 import { TeamsService } from './teams.service';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateShirtColorDto } from './dto/update-shirt-color.dto';
@@ -22,7 +22,7 @@ export class TeamsController {
     return this.teamsService.findOne(id);
   }
 
-  @Patch(':id/shirt-color')
+  @Put(':id/shirt-color')
   updateShirtColor(@Param('id') id: string, @Body() updateShirtColorDto: UpdateShirtColorDto) {
     return this.teamsService.updateShirtColor(id, updateShirtColorDto);
   }

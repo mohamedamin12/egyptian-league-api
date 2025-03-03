@@ -18,11 +18,14 @@ export class PlayersService {
   }
 
   async findAll(): Promise<Player[]>  {
-    return this.playerRepository.find({ relations: ['team'] });
+    const players = this.playerRepository.find({ relations: ['team']  });
+    return players;
   }
 
-  async findOne(id: string): Promise<Player | null>  {
-    return this.playerRepository.findOne({ where: { id }, relations: ['team'] });
+  async findOne(id: string): Promise<Player | null> { 
+    const player = this.playerRepository.findOne({ where: { id }, relations: ['team'] });
+    if (!player) throw new NotFoundException('Player not found');
+    return player;
   }
 
   async updateSalary(id: string, updateSalaryDto: UpdateSalaryDto): Promise<Player | null> {
@@ -39,8 +42,8 @@ export class PlayersService {
     return this.playerRepository.save(player);
   }
 
-  async deletePlayer(id: string): Promise<boolean> {
-    const result = await this.playerRepository.delete(id);
-    return result.affected !== 0;
+  async deletePlayer(id: string) {
+     await this.playerRepository.delete(id);
+    return {message : "Player deleted successfully"};
   }
 }
