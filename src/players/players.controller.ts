@@ -4,6 +4,7 @@ import { CreatePlayerDto } from './dto/create-player.dto';
 import { TransferPlayerDto } from './dto/transfer-player.dto';
 import { UpdateSalaryDto } from './dto/update-salary.dto';
 import { AuthGuard } from 'src/admin/guards/auth.guard';
+import { ApiSecurity } from '@nestjs/swagger';
 
 @Controller('players')
 export class PlayersController {
@@ -11,6 +12,7 @@ export class PlayersController {
 
   @Post()
   @UseGuards(AuthGuard)
+  @ApiSecurity('bearer')
   create(@Body() createPlayerDto: CreatePlayerDto) {
     return this.playersService.create(createPlayerDto);
   }
@@ -23,24 +25,28 @@ export class PlayersController {
 
   @Get(':id')
   @UseGuards(AuthGuard)
+  @ApiSecurity('bearer')
   findOne(@Param('id') id: string) {
     return this.playersService.findOne(id);
   }
 
   @Delete(':id')
   @UseGuards(AuthGuard)
+  @ApiSecurity('bearer')
   deletePlayer(@Param('id') id: string) {
     return this.playersService.deletePlayer(id);
   }
 
   @Put(':id/transfer')
   @UseGuards(AuthGuard)
+  @ApiSecurity('bearer')
   transferPlayer(@Param('id') id: string, @Body() transferPlayerDto: TransferPlayerDto) {
     return this.playersService.transferPlayer(id, transferPlayerDto);
   }
 
   @Put(':id/salary')
   @UseGuards(AuthGuard)
+  @ApiSecurity('bearer')
   updateSalary(@Param('id') id: string, @Body() updateSalaryDto: UpdateSalaryDto) {
     return this.playersService.updateSalary(id, updateSalaryDto);
   }
