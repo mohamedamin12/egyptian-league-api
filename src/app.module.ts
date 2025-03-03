@@ -1,17 +1,18 @@
 import { ClassSerializerInterceptor, Module } from '@nestjs/common';
-import { TeamsModule } from './teams/teams.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_INTERCEPTOR } from '@nestjs/core';
-import { PlayersModule } from './players/players.module';
 import { Team } from './teams/entities/team.entity';
 import { Player } from './players/entities/player.entity';
+import { Admin } from './admin/entities/admin.entity';
+import { PlayersModule } from './players/players.module';
+import { TeamsModule } from './teams/teams.module';
+import { AdminModule } from './admin/admin.module';
 
 
 @Module({
   imports: [
-    TeamsModule,
     TypeOrmModule.forRootAsync({
       inject:[ConfigService],
       useFactory: (config : ConfigService) => {
@@ -23,7 +24,7 @@ import { Player } from './players/entities/player.entity';
           password: config.get<string>("DB_PASSWORD"),
           database: config.get<string>("DB_NAME"),
           synchronize: process.env.NODE_ENV !== 'production',
-          entities:[Team , Player]
+          entities:[Team , Player , Admin]
         }
       }
     }), 
@@ -36,8 +37,9 @@ import { Player } from './players/entities/player.entity';
       ttl: 60000,
       limit: 10,
     }]),
-
+    TeamsModule,
     PlayersModule,
+    AdminModule,
   ],
 
   providers: [
