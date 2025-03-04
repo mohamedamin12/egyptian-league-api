@@ -11,18 +11,24 @@ export class PlayersService {
   constructor(
     @InjectRepository(Player)
     private readonly playerRepository: Repository<Player>,
-  ) {}
-  async create(createPlayerDto: CreatePlayerDto) : Promise<Player> {
+  ) { }
+  async create(createPlayerDto: CreatePlayerDto): Promise<Player> {
     const player = this.playerRepository.create(createPlayerDto);
     return this.playerRepository.save(player);
   }
 
-  async findAll(): Promise<Player[]>  {
-    const players = this.playerRepository.find({ relations: ['team']  });
+  /**
+ * Get All players
+ * @param pageNumber number of the current page
+ * @param perPage data per page
+ * @returns collection of all players
+ */
+  async findAll(): Promise<Player[]> {
+    const players = this.playerRepository.find({ relations: ['team'] });
     return players;
   }
 
-  async findOne(id: string): Promise<Player | null> { 
+  async findOne(id: string): Promise<Player | null> {
     const player = this.playerRepository.findOne({ where: { id }, relations: ['team'] });
     if (!player) throw new NotFoundException('Player not found');
     return player;
@@ -43,7 +49,7 @@ export class PlayersService {
   }
 
   async deletePlayer(id: string) {
-     await this.playerRepository.delete(id);
-    return {message : "Player deleted successfully"};
+    await this.playerRepository.delete(id);
+    return { message: "Player deleted successfully" };
   }
 }
