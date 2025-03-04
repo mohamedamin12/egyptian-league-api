@@ -21,7 +21,7 @@ export class Player {
 
   @Column('decimal', { precision: 10, scale: 2 })
   salary: number;
-
+  
   @ManyToOne(() => Team, (team) => team.players)
   team: Team;
 

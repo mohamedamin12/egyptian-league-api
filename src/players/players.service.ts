@@ -52,4 +52,6 @@ export class PlayersService {
     await this.playerRepository.delete(id);
     return { message: "Player deleted successfully" };
   }
+
+  
 }
